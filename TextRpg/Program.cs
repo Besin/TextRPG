@@ -17,8 +17,6 @@ namespace TextRpg
 
         static void village ()
         {
-            int result;
-
             Console.Clear();
             Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.");
@@ -26,6 +24,7 @@ namespace TextRpg
             Console.WriteLine("1. 상태보기");
             Console.WriteLine("2. 인벤토리");
             Console.WriteLine("3. 상점");
+            Console.WriteLine("4. 던전입장");
             Console.WriteLine("\n");
             Console.WriteLine("원하시는 행동을 입력해주세요.");
             string inputVillage = Console.ReadLine();
@@ -41,25 +40,36 @@ namespace TextRpg
                 case "3":
                     Shop();
                     break;
+                case "4":
+                    Dungeon();
+                    break;
 
             }
             bool resVillage = int.TryParse(inputVillage, out int selectVillage);
-            if (selectVillage < 1 || selectVillage > 3)
+            
+            while (true)
             {
-                Console.WriteLine("잘못된 선택입니다. 다시 입력해주세요.");
-                string inputVillage2 = Console.ReadLine();
-                bool resVillage2 = int.TryParse(inputVillage2, out int selectVillage2);
-                if (selectVillage2 == 1)
+                if (selectVillage < 1 || selectVillage > 4)
                 {
-                    status();
-                }
-                else if (selectVillage2 == 2)
-                {
-                    Inventory();
-                }
-                else if (selectVillage2 == 3)
-                {
-                    Shop();
+                    Console.WriteLine("잘못된 선택입니다. 다시 입력해주세요.");
+                    string inputvillage2 = Console.ReadLine();
+                    bool resvillage2 = int.TryParse(inputvillage2, out int selectvillage2);
+                    if (selectvillage2 == 1)
+                    {
+                        status();
+                    }
+                    else if (selectvillage2 == 2)
+                    {
+                        Inventory();
+                    }
+                    else if (selectvillage2 == 3)
+                    {
+                        Shop();
+                    }
+                    else if (selectvillage2 == 4)
+                    {
+                        Dungeon();
+                    }
                 }
             }
         }
@@ -102,10 +112,30 @@ namespace TextRpg
 
         static void Inventory ()
         {
-            List<string> inventoryItemList = new List<string>();
-
             Console.Clear();
             Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
+            Console.WriteLine("\n");
+            Console.WriteLine("0. 나가기");
+            string inventoryInput = Console.ReadLine();
+            bool resInv = int.TryParse(inventoryInput, out int selectInventory);
+
+            while (true)
+            {
+                if (selectInventory == 0)
+                {
+                    village();
+                }
+                else
+                {
+                    Console.WriteLine("잘못된 선택입니다. 다시 선택해주세요.");
+                    string inventoryInput2 = Console.ReadLine();
+                    bool resInv2 = int.TryParse(inventoryInput2, out int selectInventory2);
+                    if (selectInventory2 == 0)
+                    {
+                        village();
+                    }
+                }
+            }
         }
 
         static void Shop ()
@@ -113,11 +143,11 @@ namespace TextRpg
             List<DefItem> shopDefItemList = new List<DefItem>();
             List<AtkItem> shopAtkItemList = new List<AtkItem>();
             shopDefItemList.Add(new DefItem("수련자 갑옷", 5, "수련에 도움을 주는 갑옷입니다.", "1000"));
-            shopDefItemList.Add(new DefItem("무쇠 갑옷", 9, "무쇠로 만들어져 튼튼한 갑옷입니다.", "1000"));
-            shopDefItemList.Add(new DefItem("스파르타의 갑옷", 15, "스파르타 전사들이 사용했다는 전설의 갑옷입니다.", "1000"));
-            shopAtkItemList.Add(new AtkItem("낡은 검", 2, "쉽게 볼 수 있는 낡은 검 입니다.", "1000"));
-            shopAtkItemList.Add(new AtkItem("청동 도끼", 5, "어디선가 사용했던거 같은 도끼입니다.", "1000"));
-            shopAtkItemList.Add(new AtkItem("스파르타의 창", 7, "스파르타 전사들이 사용했다는 전설의 창입니다.", "1000"));
+            shopDefItemList.Add(new DefItem("무쇠 갑옷", 9, "무쇠로 만들어져 튼튼한 갑옷입니다.", "구매완료"));
+            shopDefItemList.Add(new DefItem("스파르타의 갑옷", 15, "스파르타 전사들이 사용했다는 전설의 갑옷입니다.", "3500"));
+            shopAtkItemList.Add(new AtkItem("낡은 검", 2, "쉽게 볼 수 있는 낡은 검 입니다.", "600"));
+            shopAtkItemList.Add(new AtkItem("청동 도끼", 5, "어디선가 사용했던거 같은 도끼입니다.", "1500"));
+            shopAtkItemList.Add(new AtkItem("스파르타의 창", 7, "스파르타 전사들이 사용했다는 전설의 창입니다.", "구매완료"));
 
             Console.Clear();
             Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
@@ -137,23 +167,26 @@ namespace TextRpg
             string inputShop = Console.ReadLine();
             bool resShop = int.TryParse(inputShop, out int selectShop);
 
-            if (selectShop == 0)
+            while (true)
             {
-                village();
-            }
-            else if (selectShop > 6 || selectShop < 0)
-            {
-                Console.WriteLine("잘못된 선택입니다. 다시 입력해주세요.");
-                string inputShop2 = Console.ReadLine();
-                bool resShop2 = int.TryParse(inputShop2, out int selectShop2);
-                if (selectShop2 == 0)
+                if (selectShop == 0)
                 {
                     village();
                 }
-                else if (selectShop2 > 0 ||  selectShop2 < 7)
+                else if (selectShop > 6 || selectShop < 0)
                 {
-                    //아이템 구매
-                    
+                    Console.WriteLine("잘못된 선택입니다. 다시 입력해주세요.");
+                    string inputShop2 = Console.ReadLine();
+                    bool resShop2 = int.TryParse(inputShop2, out int selectShop2);
+                    if (selectShop2 == 0)
+                    {
+                        village();
+                    }
+                    else if (selectShop2 > 0 || selectShop2 < 7)
+                    {
+                        //아이템 구매
+
+                    }
                 }
             }
         }
@@ -168,6 +201,7 @@ namespace TextRpg
             Console.WriteLine("3. 쉬운던전     | 방어력 17 이상 권장");
             Console.WriteLine("0. 나가기");
             string dungeonInput = Console.ReadLine();
+            bool resDungeon = int.TryParse(dungeonInput, out int selectDungeon);
             
             switch (dungeonInput)
             {
@@ -180,6 +214,23 @@ namespace TextRpg
                 case "3":
                     idungeon.HardDungeon();
                     break;
+            }
+            while (true)
+            {
+                if (selectDungeon == 0)
+                {
+                    village();
+                }
+                else if (selectDungeon > 3)
+                {
+                    Console.WriteLine("잘못된 선택입니다. 다시 선택해주세요.");
+                    string dungeonInput2 = Console.ReadLine();
+                    bool resDungeon2 = int.TryParse(dungeonInput2, out int selectDungeon2);
+                    if (selectDungeon2 == 0)
+                    {
+                        village();
+                    }
+                }
             }
         }
 
